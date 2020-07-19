@@ -2,7 +2,7 @@
 {% block content %}
 <h1>The shorterurl </h1>
 
-<form action="{% url 'shorturl:convert_url' %}" method="post">
+<form action="{% url 'shorturl:index' %}" method="post">
 	{% csrf_token %}
 	<div class="form-group">
 		<label for="url">url</label>
@@ -10,5 +10,33 @@
 	</div>
 	<button type="submit" class="btn btn-primary">submit</button>
 </form>
+
+
+{% if urls %}
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">url</th>
+      <th scope="col">shorturl</th>
+      <th scope="col">full url</th>
+    </tr>
+  </thead>
+  <tbody>
+  	{%for url in urls%}
+    <tr>
+      <th scope="row">{{url.id}}</th>
+      <td>{{url.url}}</td>
+      <td>{{url.shortUrl}}</td>
+    </tr>
+  	{%endfor%}
+  </tbody>
+</table>
+{% else %}
+<h3>no hay registros en la base de datos</h3>
+{% endif %}
+
+
 {% endblock %}
 
