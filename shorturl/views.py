@@ -5,9 +5,11 @@ from shorturl.models import Url
 
 
 def index(request):
+	# pdb.set_trace()
 	urls = Url.objects.all().order_by('-id')
 	context = {
-		'urls':urls
+		'urls':urls,
+		'host':request.META['HTTP_HOST'] 
 	}
 	if request.method == 'POST':
 		url_string = request.POST['url']
@@ -21,3 +23,21 @@ def index(request):
 		except Exception as e:
 			return e
 	return render(request,'shorturl/index.html',context)
+
+def get_url(request,short_url):
+	try:
+		url_string = Url.objects.filter(shortUrl=short_url)[0]
+	except Exception as e:
+		context = {
+			'url':"no se encontro"
+		}
+		return render(request,'shorturl/original_url.html',context)
+	else:
+
+		context = {
+			'url':url_string
+		}
+		return render(request,'shorturl/original_url.html',context)
+
+
+
